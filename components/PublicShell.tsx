@@ -9,7 +9,7 @@ export default async function PublicShell({ children }: { children: React.ReactN
     const { data } = await supabase.from("site_settings").select("key,value").in("key", ["links", "contact", "donate"]);
     links = data?.find((r) => r.key === "links")?.value;
     contact = data?.find((r) => r.key === "contact")?.value;
-    donateUrl = data?.find((r) => r.key === "donate")?.value?.stripe_url || "";
+    donateUrl = "/donate";
   } catch { /* render with defaults */ }
   return (
     <>

@@ -43,7 +43,7 @@ export default async function HomePage() {
   const completed = Number(stats?.find((s) => s.key === "projects_completed")?.value || 0);
   const inProgress = Number(stats?.find((s) => s.key === "projects_in_progress")?.value || 0);
   const pct = Math.min(100, Math.round((completed / target) * 100));
-  const donateUrl = donateSetting?.value?.stripe_url || "/get-involved#donate";
+  const donateUrl = "/donate";
 
   return (
     <PublicShell>

@@ -29,9 +29,9 @@ export default async function GetInvolvedPage() {
               hospital infrastructure projects — each with an itemized budget, execution records and
               before/after evidence you can inspect in our <a href="/projects" className="text-primary-800 font-semibold hover:underline">project library</a>.
             </p>
-            {donate.stripe_url ? (
+            {true ? (
               <div className="mt-2">
-                <a href={donate.stripe_url} className="btn-accent text-lg !px-10" rel="noopener">Donate Now</a>
+                <a href="/donate" className="btn-accent text-lg !px-10">Donate Now</a>
                 <p className="text-xs text-gray-500 mt-3">Secure payment via Stripe. One-time and monthly options available.</p>
               </div>
             ) : donate.instructions ? (

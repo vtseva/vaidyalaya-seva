@@ -215,3 +215,44 @@ export async function signOut() {
   await supabase.auth.signOut();
   redirect("/login");
 }
+
+const donationOptionSchema = z.object({
+  title: z.string().min(2).max(120),
+  description: z.string().max(500).optional(),
+  amount: z.string().optional(),
+});
+
+export async function addDonationOption(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+  const parsed = donationOptionSchema.safeParse(Object.fromEntries(formData.entries()));
+  if (!parsed.success) return { ok: false, message: "Title is required (2–120 characters)." };
+  const amtRaw = (parsed.data.amount || "").replace(/[^0-9.]/g, "");
+  const amount = amtRaw ? Number(amtRaw) : null;
+  if (amtRaw && (!Number.isFinite(amount) || amount! <= 0)) return { ok: false, message: "Amount must be a positive number, or blank for donor-chooses." };
+  const supabase = await createClient();
+  const { error } = await supabase.from("donation_options").insert({
+    title: parsed.data.title,
+    description: parsed.data.description || null,
+    amount,
+  });
+  if (error) return { ok: false, message: "Could not add the option." };
+  revalidatePath("/donate");
+  revalidatePath("/dashboard/donations");
+  return { ok: true, message: "Donation option added." };
+}
+
+export async function toggleDonationOption(id: string, active: boolean) {
+  await requireAdmin();
+  const supabase = await createClient();
+  await supabase.from("donation_options").update({ active }).eq("id", id);
+  revalidatePath("/donate");
+  revalidatePath("/dashboard/donations");
+}
+
+export async function deleteDonationOption(id: string) {
+  await requireAdmin();
+  const supabase = await createClient();
+  await supabase.from("donation_options").delete().eq("id", id);
+  revalidatePath("/donate");
+  revalidatePath("/dashboard/donations");
+}
