@@ -29,7 +29,12 @@ export default async function GetInvolvedPage() {
               hospital infrastructure projects — each with an itemized budget, execution records and
               before/after evidence you can inspect in our <a href="/projects" className="text-primary-800 font-semibold hover:underline">project library</a>.
             </p>
-            {donate.instructions ? (
+            {donate.stripe_url ? (
+              <div className="mt-2">
+                <a href={donate.stripe_url} className="btn-accent text-lg !px-10" rel="noopener">Donate Now</a>
+                <p className="text-xs text-gray-500 mt-3">Secure payment via Stripe. One-time and monthly options available.</p>
+              </div>
+            ) : donate.instructions ? (
               <p className="text-gray-700 whitespace-pre-line">{donate.instructions}</p>
             ) : (
               <div className="rounded-lg bg-saffron-100 p-4 text-sm text-gray-800">

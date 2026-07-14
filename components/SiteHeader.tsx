@@ -12,8 +12,9 @@ const nav = [
   { href: "/contact", label: "Contact" },
 ];
 
-export default function SiteHeader() {
+export default function SiteHeader({ donateUrl }: { donateUrl?: string }) {
   const [open, setOpen] = useState(false);
+  const donate = donateUrl || "/get-involved#donate";
   return (
     <header className="bg-white border-b border-warm-100 sticky top-0 z-40">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-white focus:px-3 focus:py-2 focus:rounded">
@@ -33,7 +34,10 @@ export default function SiteHeader() {
               {n.label}
             </Link>
           ))}
-          <Link href="/request-support" className="btn-accent !py-2 !px-4 text-sm">
+          <a href={donate} className="btn-accent !py-2 !px-4 text-sm" target={donateUrl ? "_blank" : undefined} rel="noopener">
+            Donate
+          </a>
+          <Link href="/request-support" className="btn-secondary !py-2 !px-4 text-sm">
             Request Hospital Support
           </Link>
           <Link href="/login" className="text-sm text-gray-500 hover:text-primary-800 py-2">
@@ -58,7 +62,10 @@ export default function SiteHeader() {
               {n.label}
             </Link>
           ))}
-          <Link href="/request-support" onClick={() => setOpen(false)} className="btn-accent w-full mt-3">
+          <a href={donate} onClick={() => setOpen(false)} className="btn-accent w-full mt-3" target={donateUrl ? "_blank" : undefined} rel="noopener">
+            Donate
+          </a>
+          <Link href="/request-support" onClick={() => setOpen(false)} className="btn-secondary w-full mt-3">
             Request Hospital Support
           </Link>
           <Link href="/login" onClick={() => setOpen(false)} className="block py-3 text-gray-500 text-center">

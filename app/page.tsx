@@ -23,13 +23,14 @@ const AREAS = [
 
 export default async function HomePage() {
   const supabase = await createClient();
-  const [{ data: stats }, { data: featured }, { data: recent }, { data: testimonials }, { data: mission }] =
+  const [{ data: stats }, { data: featured }, { data: recent }, { data: testimonials }, { data: mission }, { data: donateSetting }] =
     await Promise.all([
       supabase.from("impact_stats").select("*").eq("public", true).order("sort"),
       supabase.from("projects").select("*").eq("publication", "published").eq("featured", true).limit(1).maybeSingle(),
       supabase.from("projects").select("slug,project_code,name,hospital_name,city,state,project_type,status,short_summary,cover_image,approved_budget,actual_completion_date").eq("publication", "published").order("created_at", { ascending: false }).limit(3),
       supabase.from("testimonials").select("*").eq("approved", true).order("sort").limit(4),
       supabase.from("site_settings").select("value").eq("key", "mission").maybeSingle(),
+      supabase.from("site_settings").select("value").eq("key", "donate").maybeSingle(),
     ]);
 
   let featuredPair = null;
@@ -42,6 +43,7 @@ export default async function HomePage() {
   const completed = Number(stats?.find((s) => s.key === "projects_completed")?.value || 0);
   const inProgress = Number(stats?.find((s) => s.key === "projects_in_progress")?.value || 0);
   const pct = Math.min(100, Math.round((completed / target) * 100));
+  const donateUrl = donateSetting?.value?.stripe_url || "/get-involved#donate";
 
   return (
     <PublicShell>
@@ -59,7 +61,8 @@ export default async function HomePage() {
               partners together to create cleaner, safer and more dignified public healthcare facilities.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/request-support" className="btn-accent">Request Hospital Support</Link>
+              <a href={donateUrl} className="btn-accent" rel="noopener">Donate Now</a>
+              <Link href="/request-support" className="btn-primary !bg-white/10 !border !border-white/60 hover:!bg-white/20">Request Hospital Support</Link>
               <Link href="/projects" className="btn-primary !bg-white/10 !border !border-white/60 hover:!bg-white/20">Explore Our Projects</Link>
             </div>
           </div>
@@ -223,7 +226,7 @@ export default async function HomePage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               ["Hospitals", "Request support for your facility", "/request-support", "Request Support"],
-              ["Donors", "Fund a documented, transparent project", "/get-involved#donate", "Support a Project"],
+              ["Donors", "Fund a documented, transparent project", donateUrl, "Donate"],
               ["Volunteers", "Serve alongside our teams", "/get-involved#volunteer", "Volunteer"],
               ["CSR & Government", "Partner on healthcare infrastructure", "/get-involved#partner", "Partner With Us"],
             ].map(([title, desc, href, cta]) => (

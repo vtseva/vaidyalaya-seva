@@ -17,7 +17,7 @@ export default async function SettingsPage() {
       />
       <SettingsForm
         settingKey="donate" title="Donation Section" current={get("donate")}
-        fields={[["headline", "Headline"], ["instructions", "Donation instructions (bank details, links — shown publicly when filled)"], ["contact_email", "Donations contact email"]]}
+        fields={[["stripe_url", "Stripe payment link URL (donate buttons use this)"], ["headline", "Headline"], ["instructions", "Donation instructions (bank details, links — shown publicly when filled)"], ["contact_email", "Donations contact email"]]}
       />
       <SettingsForm
         settingKey="mission" title="Mission 70" current={get("mission")}
