@@ -47,6 +47,7 @@ export async function startDonation(formData: FormData) {
     "line_items[0][price_data][unit_amount]": String(Math.round(amount * 100)),
     "line_items[0][price_data][product_data][name]": `${title} – Vaidyalaya Seva`,
     "line_items[0][price_data][product_data][description]": description.slice(0, 300),
+    "payment_intent_data[description]": (title + " - Vaidyalaya Seva donation").slice(0, 500),
     success_url: `${site}/donate/thank-you?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${site}/donate?canceled=1`,
   });
