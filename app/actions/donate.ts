@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 
 const CURRENCY = (process.env.DONATION_CURRENCY || "usd").toLowerCase();
@@ -38,7 +39,17 @@ export async function startDonation(formData: FormData) {
     redirect("/donate?error=amount");
   }
 
-  const site = process.env.NEXT_PUBLIC_SITE_URL || "https://www.vaidyalayaseva.org";
+  // Keep the donor on whichever of our domains they started from
+  const ALLOWED_HOSTS = [
+    "www.vaidyalayaseva.org", "vaidyalayaseva.org",
+    "www.supporthospitals.org", "supporthospitals.org",
+    "vaidyalaya-seva.vercel.app", "localhost:3000",
+  ];
+  const h = await headers();
+  const host = h.get("x-forwarded-host") || h.get("host") || "";
+  const site = ALLOWED_HOSTS.includes(host)
+    ? `${host.startsWith("localhost") ? "http" : "https"}://${host}`
+    : process.env.NEXT_PUBLIC_SITE_URL || "https://www.vaidyalayaseva.org";
   const params = new URLSearchParams({
     mode: "payment",
     submit_type: "donate",
