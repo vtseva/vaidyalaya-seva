@@ -17,7 +17,7 @@ export default async function SettingsPage() {
       />
       <SettingsForm
         settingKey="donate" title="Donation Section" current={get("donate")}
-        fields={[["stripe_url", "Stripe payment link URL (donate buttons use this)"], ["headline", "Headline"], ["instructions", "Donation instructions (bank details, links — shown publicly when filled)"], ["contact_email", "Donations contact email"]]}
+        fields={[["ein", "EIN (501(c)(3) tax ID shown on donate page)"], ["headline", "Headline"], ["instructions", "Donation instructions (bank details, links — shown publicly when filled)"], ["contact_email", "Donations contact email"]]}
       />
       <SettingsForm
         settingKey="mission" title="Mission 70" current={get("mission")}
@@ -25,7 +25,7 @@ export default async function SettingsPage() {
       />
       <SettingsForm
         settingKey="links" title="Organization Links" current={get("links")}
-        fields={[["vtsbharath", "Vikasa Tarangini URL"], ["vtseva", "VT Seva URL"], ["chinnajeeyar", "Chinna Jeeyar URL"]]}
+        fields={[["india_donate", "India donate page URL"], ["vtsbharath", "Vikasa Tarangini URL"], ["vtseva", "VT Seva URL"], ["chinnajeeyar", "Chinna Jeeyar URL"]]}
       />
     </div>
   );
