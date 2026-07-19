@@ -25,7 +25,7 @@ export default async function SettingsPage() {
       />
       <SettingsForm
         settingKey="links" title="Organization Links" current={get("links")}
-        fields={[["india_donate", "India donate page URL"], ["vtsbharath", "Vikasa Tarangini URL"], ["vtseva", "VT Seva URL"], ["chinnajeeyar", "Chinna Jeeyar URL"]]}
+        fields={[["homepage_video", "Homepage video (YouTube URL or ID)"], ["india_donate", "India donate page URL"], ["vtsbharath", "Vikasa Tarangini URL"], ["vtseva", "VT Seva URL"], ["chinnajeeyar", "Chinna Jeeyar URL"]]}
       />
     </div>
   );

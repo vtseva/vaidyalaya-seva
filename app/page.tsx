@@ -44,6 +44,9 @@ export default async function HomePage() {
   const inProgress = Number(stats?.find((s) => s.key === "projects_in_progress")?.value || 0);
   const pct = Math.min(100, Math.round((completed / target) * 100));
   const donateUrl = "/donate";
+  const { data: linksSetting } = await supabase.from("site_settings").select("value").eq("key", "links").maybeSingle();
+  const rawVideo = String(linksSetting?.value?.homepage_video || "XP0IQfZgklo");
+  const videoId = (rawVideo.match(/(?:youtu\.be\/|v=|embed\/)([A-Za-z0-9_-]{6,20})/) || [null, rawVideo])[1];
 
   return (
     <PublicShell>
@@ -86,6 +89,25 @@ export default async function HomePage() {
           <Link href="/about" className="btn-secondary">Learn About the Organizations</Link>
         </div>
         <Image src="/images/swamiji-healthcare.jpg" alt="H.H. Sri Chinna Jeeyar Swamiji with healthcare volunteers" width={800} height={533} className="rounded-xl shadow-md w-full object-cover" />
+      </section>
+
+      {/* Video */}
+      <section className="bg-primary-900">
+        <div className="mx-auto max-w-6xl px-4 py-14">
+          <h2 className="text-2xl sm:text-3xl font-bold !text-white mb-2 text-center">Watch Our Story</h2>
+          <p className="text-primary-100 text-center mb-8 max-w-2xl mx-auto">See how volunteers, donors and hospitals come together to transform public healthcare facilities.</p>
+          <div className="relative mx-auto max-w-3xl rounded-xl overflow-hidden shadow-lg" style={{ aspectRatio: "16 / 9" }}>
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${videoId}`}
+              title="Vaidyalaya Seva — our story"
+              loading="lazy"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
+              className="absolute inset-0 w-full h-full border-0"
+            />
+          </div>
+        </div>
       </section>
 
       {/* The need */}
